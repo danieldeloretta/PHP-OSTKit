@@ -328,8 +328,7 @@ Class OST{
 		else{
 			$output = $curl->get($request_params["request_url"], $request_params["params"]);
 		}
-		$result = json_decode($output->response, true);
-		return $result;
+		return json_decode($output->response, true);
 	} //curl_post
 	
 	
