@@ -1,5 +1,19 @@
 # PHPOSTKit
-A rather uninteresting PHP implementation of OST Kit Alpha
+A rather uninteresting PHP implementation of OST Kit Alpha.
+
+Currently supports the full OSTKit API:
+
+* Create user
+* Edit user
+* List users
+* Airdrop users
+* Airdrop status
+* Create transaction type
+* Edit a transaction type
+* List transaction types
+* Execute a transaction type
+* Get status of an executed transaction (or multiple transactions at once)
+
 
 Pretty straightforward usage:
 
