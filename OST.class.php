@@ -38,11 +38,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params);
-		if ($result["success"] === false){
-			return false;
-		}
-		return $result["data"];
+		return self::curl_request($request_params);
 	} //create_user
 	
 	
@@ -63,11 +59,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params);
-		if ($result["success"] === false){
-			return false;
-		}
-		return $result["data"];
+		return self::curl_request($request_params);
 	} //edit_user
 	
 	
@@ -88,11 +80,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params, 'get');
-		if ($result["success"] === false){
-			return false;
-		}
-		return $result["data"];
+		return self::curl_request($request_params, 'get');
 	} //list_users
 	
 	
@@ -122,11 +110,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params);
-		if ($result["success"] === false){
-			return false;
-		}
-		return $result["data"];
+		return self::curl_request($request_params);
 	} //airdrop_drop
 	
 	
@@ -144,11 +128,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params, 'get');
-		if ($result === false){
-			return false;
-		}
-		return $result["data"];
+		return self::curl_request($request_params, 'get');
 	} //airdrop_status
 	
 	
@@ -176,11 +156,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params);
-		if ($result["success"] === false){
-			return false;
-		}
-		return $result["data"];
+		return self::curl_request($request_params);
 	} //create_tx
 	
 	
@@ -203,11 +179,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params);
-		if ($result["success"] === false){
-			return false;
-		}
-		return $result["data"];
+		return self::curl_request($request_params);
 	} //edit_tx
 	
 	
@@ -223,11 +195,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params, 'get');
-		if ($result["success"] === false){
-			return false;
-		}
-		return $result["data"];
+		return self::curl_request($request_params, 'get');
 	} //list_transactions
 	
 	
@@ -247,16 +215,15 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params);
-		if ($result["success"] === false){
-			return false;
-		}
-		return $result["data"]["transaction_uuid"];
+		return self::curl_request($request_params);
 	} //execute_tx
 	
 	
 	
-	
+	/*
+	 * $tx_uuids must be an array.
+	 *
+	 */
 	public static function tx_status($tx_uuids){
 		$endpoint = '/transaction-types/status';
 		$uts = time();
@@ -270,11 +237,7 @@ Class OST{
 		$signature = self::create_signature($qs . $parsed_uuids);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_request($request_params);
-		if ($result["success"] === false){
-			return false;
-		}
-		return $result["data"];
+		return self::curl_request($request_params);
 	} //tx_status
 	
 	
@@ -297,11 +260,11 @@ Class OST{
 	
 	
 	
-	public static function make_querystring($endpoint, $fields, $timestamp){
-		$fields["api_key"] = OST_API_KEY;
-		$fields["request_timestamp"] = $timestamp;
-		ksort($fields);
-		return $endpoint . '?' . http_build_query($fields);
+	public static function make_querystring($endpoint, $params, $timestamp){
+		$params["api_key"] = OST_API_KEY;
+		$params["request_timestamp"] = $timestamp;
+		ksort($params);
+		return $endpoint . '?' . http_build_query($params);
 		
 	} //make_querystring
 	
