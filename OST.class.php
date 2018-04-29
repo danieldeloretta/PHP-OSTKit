@@ -24,7 +24,7 @@ Class OST{
 	 */
 	
 	/*
-	 * Name: 3 - 20 characters
+	 * Name restrictions: 3 - 20 characters
 	 */
 	public static function create_user($name){
 		$endpoint = '/users/create';
@@ -48,7 +48,7 @@ Class OST{
 	
 	
 	/*
-	 * Name: 3 - 20 characters
+	 * Name restrictions: 3 - 20 characters
 	 */
 	public static function edit_user($uuid, $name){
 		$endpoint = '/users/edit';
@@ -65,7 +65,6 @@ Class OST{
 		
 		$result = self::curl_request($request_params);
 		if ($result["success"] === false){
-			var_dump($result);
 			return false;
 		}
 		return $result["data"];
@@ -108,7 +107,7 @@ Class OST{
 	
 	
 	/*
-	 * list_type can be 'all' or 'never_airdropped'
+	 * list_type ($type) can be 'all' or 'never_airdropped'
 	 */
 	public static function airdrop_drop($amount, $type){
 		$endpoint = '/users/airdrop/drop';
@@ -123,11 +122,11 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$response = self::curl_request($request_params);
-		if ($response["success"] === false){
+		$result = self::curl_request($request_params);
+		if ($result["success"] === false){
 			return false;
 		}
-		return $response["data"];
+		return $result["data"];
 	} //airdrop_drop
 	
 	
@@ -145,11 +144,11 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$response = self::curl_request($request_params, 'get');
-		if ($response === false){
+		$result = self::curl_request($request_params, 'get');
+		if ($result === false){
 			return false;
 		}
-		return $response["data"];
+		return $result["data"];
 	} //airdrop_status
 	
 	
@@ -257,27 +256,25 @@ Class OST{
 	
 	
 	
-	/*
-	 * Note: This only supports a single transaction UUID.
-	 * TODO: fix this up to lookup multiple tx UUIDS.
-	 */
+	
 	public static function tx_status($tx_uuids){
 		$endpoint = '/transaction-types/status';
 		$uts = time();
 		
 		$params = [
-			'transaction_uuids' => $tx_uuids
+			'transaction_uuids[]' => $tx_uuids
 		];
 		
-		$qs = self::make_querystring($endpoint, $params, $uts);
-		$signature = self::create_signature($qs);
+		$qs = self::make_querystring($endpoint, '', $uts);
+		$parsed_uuids = self::tx_status_uuid_helper($tx_uuids);
+		$signature = self::create_signature($qs . $parsed_uuids);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		$response = self::curl_request($request_params);
-
-		if ($response["success"] === false){
+		
+		$result = self::curl_request($request_params);
+		if ($result["success"] === false){
 			return false;
 		}
-		return $response["data"];
+		return $result["data"];
 	} //tx_status
 	
 	
@@ -288,6 +285,17 @@ Class OST{
 	/*
 	 * Helpers
 	 */
+	
+	public static function tx_status_uuid_helper($uuids){
+		$str = '';
+		foreach ($uuids as $u){
+			$str .= '&transaction_uuids[]=' . $u;
+		}
+		return $str;
+	} //tx_status_uuid_helper
+	
+	
+	
 	
 	public static function make_querystring($endpoint, $fields, $timestamp){
 		$fields["api_key"] = OST_API_KEY;
