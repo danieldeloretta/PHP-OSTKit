@@ -38,7 +38,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_post($request_params);
+		$result = self::curl_request($request_params);
 		if ($result["success"] === false){
 			return false;
 		}
@@ -63,7 +63,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_post($request_params);
+		$result = self::curl_request($request_params);
 		if ($result["success"] === false){
 			var_dump($result);
 			return false;
@@ -89,7 +89,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_get($request_params);
+		$result = self::curl_request($request_params, 'get');
 		if ($result["success"] === false){
 			return false;
 		}
@@ -123,7 +123,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$response = self::curl_post($request_params);
+		$response = self::curl_request($request_params);
 		if ($response["success"] === false){
 			return false;
 		}
@@ -145,7 +145,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$response = self::curl_get($request_params);
+		$response = self::curl_request($request_params, 'get');
 		if ($response === false){
 			return false;
 		}
@@ -177,7 +177,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_post($request_params);
+		$result = self::curl_request($request_params);
 		if ($result["success"] === false){
 			return false;
 		}
@@ -204,7 +204,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_post($request_params);
+		$result = self::curl_request($request_params);
 		if ($result["success"] === false){
 			return false;
 		}
@@ -224,7 +224,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_get($request_params);
+		$result = self::curl_request($request_params, 'get');
 		if ($result["success"] === false){
 			return false;
 		}
@@ -248,7 +248,7 @@ Class OST{
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
-		$result = self::curl_post($request_params);
+		$result = self::curl_request($request_params);
 		if ($result["success"] === false){
 			return false;
 		}
@@ -272,7 +272,7 @@ Class OST{
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		$response = self::curl_post($request_params);
+		$response = self::curl_request($request_params);
 
 		if ($response["success"] === false){
 			return false;
@@ -320,22 +320,17 @@ Class OST{
 	
 	
 	
-	public static function curl_post($request_params){
+	public static function curl_request($request_params, $method = 'post'){
 		$curl = new Curl();
-		$output = $curl->post($request_params["request_url"], $request_params["params"]);
+		if ($method == 'post'){
+			$output = $curl->post($request_params["request_url"], $request_params["params"]);
+		}
+		else{
+			$output = $curl->get($request_params["request_url"], $request_params["params"]);
+		}
 		$result = json_decode($output->response, true);
 		return $result;
 	} //curl_post
-	
-	
-	
-	
-	public static function curl_get($request_params){
-		$curl = new Curl();
-		$output = $curl->get($request_params["request_url"], $request_params["params"]);
-		$result = json_decode($output->response, true);
-		return $result;
-	} //curl_get
 	
 	
 	
