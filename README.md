@@ -1,2 +1,2 @@
 # PHPOSTKit
-PHP implementation of OST Kit Alpha
+A rather uninteresting PHP implementation of OST Kit Alpha
