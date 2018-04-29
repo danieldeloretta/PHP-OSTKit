@@ -9,4 +9,4 @@ $name = 'Foo Bar';
 $user_uuid = OST::create_user($name);
 ```
 
-Don't forget to add in your API key, API secret, and base URL into your project. I defined them as a constant in a config file.
+Don't forget to add in your API key, API secret, and base URL into your project. I defined them as a constant in a config file in my project.
