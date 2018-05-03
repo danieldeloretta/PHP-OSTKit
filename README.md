@@ -1,7 +1,7 @@
 # PHPOSTKit
 A rather uninteresting PHP implementation of OST Kit Alpha.
 
-Currently supports the full OSTKit API:
+Currently supports the full OSTKit v0.9.2 API:
 
 * Create user
 * Edit user
