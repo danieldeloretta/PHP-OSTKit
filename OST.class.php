@@ -2,7 +2,7 @@
 
 /*********************************************************************************************************************
  *
- * A quick and dirty implementation of OST Kit Alpha in PHP.
+ * A quick and dirty implementation of OST Kit Alpha 0.9.2 in PHP.
  *
  * Uses object oriented cURL from here: https://github.com/php-mod/curl/blob/master/src/Curl/Curl.php
  *
