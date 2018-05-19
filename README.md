@@ -14,6 +14,7 @@ Currently supports the full OSTKit v0.9.2 API:
 * Execute a transaction type
 * Get status of an executed transaction (or multiple transactions at once)
 
+NOTE: Validation may have changed for various endpoints.
 
 Pretty straightforward usage:
 
