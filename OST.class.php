@@ -7,11 +7,11 @@
  * Uses object oriented cURL from here: https://github.com/php-mod/curl/blob/master/src/Curl/Curl.php
  *
  * OST_API_KEY, OST_SECRET, and OST_BASE_URL are set as constants.
- * 
- * 
- * 
+ *
+ *
+ *
  * !! BE SURE TO READ THE KNOWN ISSUES SECTION IN THE README !!
- * 
+ *
  *
  ********************************************************************************************************************/
 
@@ -539,6 +539,12 @@ Class OST{
 	 ***************************************************/
 	
 	
+	
+	/**
+	 * @param string $endpoint
+	 * @param array $list_options
+	 * @return mixed
+	 */
 	public static function list_endpoint($endpoint, $list_options){
 		$uts = time();
 		
@@ -552,7 +558,9 @@ Class OST{
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
 		
 		return self::curl_request($request_params, 'get');
-	}
+	} //list_endpoint
+	
+	
 	
 	
 	/**
