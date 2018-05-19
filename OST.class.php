@@ -140,7 +140,7 @@ Class OST{
 	 * Transactions
 	 */
 	
-	public static function create_tx($name, $kind, $currency_type, $currency_value, $commission_pc){
+	public static function create_tx($name, $kind, $currency_type, $currency_value, $commission_pc = 0.0){
 		$endpoint = '/transaction-types/create';
 		$uts = time();
 		
@@ -148,9 +148,12 @@ Class OST{
 			'name' => $name,
 			'kind' => $kind,
 			'currency_type' => $currency_type,
-			'currency_value' =>$currency_value,
-			'commission_percent' => $commission_pc
+			'currency_value' =>$currency_value
 		];
+		
+		if ($kind == 'user_to_user'){
+			$params['commission_percent'] = $commission_pc;
+		}
 		
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
