@@ -65,7 +65,7 @@ Array
 There are a few issues I have come across:
 
 * `list_users` when you provide the optional filter `name` it is apparently ignored and returns the list as if the filter was not passed.
-* `list_transactions` seems to stop returning transactions after you set `limit` to 83 or above.
+* `list_transactions` seems to stop returning transactions after you set `limit` to ~80 or above.
 * `list_transfers` when called with no options, doesn't return anything. Not even an error.
 
 
