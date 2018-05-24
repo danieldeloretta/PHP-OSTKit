@@ -62,6 +62,9 @@ Array
 ```
 
 # KNOWN ISSUES
+**UPDATE 23 MAY 2018**:
+Devs have apparently addressed the latency/timeout issues described below. Unsure about the name filters on the users, or the . I haven't tested any of these since they announced the fixes. YMMV.
+
 There are a few issues I have come across:
 
 * `list_users` when you provide the optional filter `name` it is apparently ignored and returns the list as if the filter was not passed.
