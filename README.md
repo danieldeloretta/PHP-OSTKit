@@ -63,14 +63,14 @@ Array
 
 # KNOWN ISSUES
 **UPDATE 23 MAY 2018**:
-Devs have apparently addressed the latency/timeout issues described below. Unsure about the name filters on the users, or the . I haven't tested any of these since they announced the fixes. YMMV.
+Devs have apparently addressed the latency/timeout issues described below.
 
 There are a few issues I have come across:
 
 * `list_users` when you provide the optional filter `name` it is apparently ignored and returns the list as if the filter was not passed.
-* `list_actions` has some unexpected (read: not intuitive to me) behaviour when requesting a list that passes the optional filter of `arbitrary_commission=true` - this will also return user to company, and company to user actions. I'd say this is unexpected because U2C or C2U actions do not have a commission attribute - and even if they do but are simply not visible to us, they should most definitely be set to `false`.
-* `list_transactions` seems to stop returning transactions after you set `limit` to ~80 or above. For example, setting the limit to 80 works fine. Setting it to 81 and it fails without error (returns null). I don't know if this is an issue with my server or the API.
-* `list_transfers` when called with no options, doesn't return anything. Not even an error. Again I am unsure if this is an issue with my server or the API. I mean... in fairness, it's probably the API.
+* `list_actions` has some unexpected (read: not intuitive to me) behaviour when requesting a list that passes the optional filter of `arbitrary_commission=true` - this will also return user to company, and company to user actions. I'd say this is unexpected because U2C or C2U actions do not have a commission attribute - and even if they do but are simply not visible to us, they should most definitely be set to `false`. Furthermore, the API description states in the description `user_to_user actions where the commission is set during creation or provided at execution`. 	
+* ~~`list_transactions` seems to stop returning transactions after you set `limit` to ~80 or above. For example, setting the limit to 80 works fine. Setting it to 81 and it fails without error (returns null). I don't know if this is an issue with my server or the API.~~ Fixed 23 May 2018
+* ~~`list_transfers` when called with no options, doesn't return anything. Not even an error. Again I am unsure if this is an issue with my server or the API. I mean... in fairness, it's probably the API.~~ Fixed 23 May 2018
 
 
 
