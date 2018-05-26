@@ -108,7 +108,6 @@ Class OST{
 	 *
 	 * 		optional filters:
 	 * 			id = comma separated string of UUIDs. maximum of 100
-	 * 			name = comma separated string of names. maxmimum 100. !!! this does not currently work at the moment !!!
 	 *
 	 * @return mixed
 	 */
