@@ -22,15 +22,15 @@ namespace OST;
 use Curl\Curl as Curl;
 
 Class OST{
-	
+
 	/***************************************************
 	 *
 	 * Users
 	 *
 	 ***************************************************/
-	
-	
-	
+
+
+
 	/**
 	 * @param string $name - must be >= 3 and <= 20 characters - a-z 0-9 spaces only.
 	 * @return mixed
@@ -38,21 +38,21 @@ Class OST{
 	public static function create_user($name){
 		$endpoint = '/users';
 		$uts = time();
-		
+
 		$params = [
 			'name' => $name
 		];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params);
 	} //create_user
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param string $uuid - the uuid of the user to update
 	 * @param string $name - must be >= 3 and <= 20 characters - a-z 0-9 spaces only.
@@ -61,21 +61,21 @@ Class OST{
 	public static function update_user($uuid, $name){
 		$endpoint = '/users/' . $uuid;
 		$uts = time();
-		
+
 		$params = [
 			'name' => $name
 		];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params);
 	} //update_user
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param string $uuid - the uuid of the user to retrieve
 	 * @return mixed
@@ -83,19 +83,19 @@ Class OST{
 	public static function retrieve_user($uuid){
 		$endpoint = '/users/' . $uuid;
 		$uts = time();
-		
+
 		$params = [];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params, 'get');
 	} //retrieve_user
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Important note: The optional filter "name" does not work as expected. issue raised with devs
 	 *
@@ -115,20 +115,20 @@ Class OST{
 		$endpoint = '/users';
 		return self::list_endpoint($endpoint, $list_options);
 	} //list_users
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	/***************************************************
 	 *
 	 * Airdrops
 	 *
 	 ***************************************************/
-	
-	
+
+
 	/**
 	 * NOTE: see truth table for how the params affect eachother:
 	 * https://dev.ost.com/docs/api_airdrop_execute.html#interdependency-of-parameters
@@ -141,23 +141,23 @@ Class OST{
 	public static function execute_airdrop($amount, $has_airdropped, $user_ids){
 		$endpoint = '/airdrops';
 		$uts = time();
-		
+
 		$params = [
 			'amount' => $amount,
 			'airdropped' => $has_airdropped,
 			'user_ids' => $user_ids
 		];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params);
 	} //execute_airdrop
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param string $uuid - the airdrop UUID to retrieve
 	 * @return mixed
@@ -165,19 +165,19 @@ Class OST{
 	public static function retrieve_airdrop($uuid){
 		$endpoint = '/airdrops/' . $uuid;
 		$uts = time();
-		
+
 		$params = [];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params, 'get');
 	} //retrieve_airdrop
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param array $list_options - options passed. if no options are passed the following defaults are used:
 	 * 		page_no = 1
@@ -195,21 +195,21 @@ Class OST{
 		$endpoint = '/airdrops';
 		return self::list_endpoint($endpoint, $list_options);
 	} //list_airdrops
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	/***************************************************
 	 *
 	 * Actions
 	 *  - an action becomes a transaction when it is executed. i think...
 	 *
 	 ***************************************************/
-	
-	
+
+
 	/**
 	 * @param string $name - the name of the transaction. this must be unique
 	 * @param string $kind - can be user_to_company, company_to_user, or user_to_user
@@ -223,35 +223,35 @@ Class OST{
 	public static function create_action($name, $kind, $currency_type, $is_arbitrary_amount, $amount, $is_arbitrary_commission = 'false', $commission_pc = '0'){
 		$endpoint = '/actions';
 		$uts = time();
-		
+
 		$params = [
 			'name' => $name,
 			'kind' => $kind,
 			'currency' => $currency_type,
 			'arbitrary_amount' => $is_arbitrary_amount
 		];
-		
+
 		if ($is_arbitrary_amount == 'false'){
 			$params['amount'] = $amount;
 		}
-		
+
 		if ($kind == 'user_to_user'){
 			if ($is_arbitrary_commission == 'false'){
 				$params['commission_percent'] = $commission_pc;
 			}
 			$params['arbitrary_commission'] = $is_arbitrary_commission;
 		}
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params);
 	} //create_action
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param int $action_id - the action id
 	 * @param string $name - the name of the transaction. this must be unique
@@ -266,35 +266,35 @@ Class OST{
 	public static function update_action($action_id, $name, $kind, $currency_type, $is_arbitrary_amount, $amount, $is_arbitrary_commission = 'false', $commission_pc = '0'){
 		$endpoint = '/actions/' . $action_id;
 		$uts = time();
-		
+
 		$params = [
 			'name' => $name,
 			'kind' => $kind,
 			'currency' => $currency_type,
 			'arbitrary_amount' => $is_arbitrary_amount
 		];
-		
+
 		if ($is_arbitrary_amount == 'false'){
 			$params['amount'] = $amount;
 		}
-		
+
 		if ($kind == 'user_to_user'){
 			if ($is_arbitrary_commission == 'false'){
 				$params['commission_percent'] = $commission_pc;
 			}
 			$params['arbitrary_commission'] = $is_arbitrary_commission;
 		}
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params);
 	} //edit_tx
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param int $action_id - the id of the action
 	 * @return mixed
@@ -302,19 +302,19 @@ Class OST{
 	public static function retrieve_action($action_id){
 		$endpoint = '/actions/' . $action_id;
 		$uts = time();
-		
+
 		$params = [];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params, 'get');
 	} //retrieve_action
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param array $list_options - options passed. if no options are passed the following defaults are used:
 	 * 		page_no = 1
@@ -335,22 +335,22 @@ Class OST{
 		$endpoint = '/actions';
 		return self::list_endpoint($endpoint, $list_options);
 	} //list_transactions
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	/***************************************************
 	 *
 	 * Transactions
 	 *  - silly naming i think. i guess the logic is:
-	 *    actions become transactions when they are executed.
+	 *	actions become transactions when they are executed.
 	 *
 	 ***************************************************/
-	
-	
+
+
 	/**
 	 * @param string $from - UUID of the sender
 	 * @param string $to - UUID of the recipient
@@ -362,31 +362,31 @@ Class OST{
 	public static function execute_action($from, $to, $action_id, $arbitrary_amount = false, $commission_percent = false){
 		$endpoint = '/transactions';
 		$uts = time();
-		
+
 		$params = [
 			'from_user_id' => $from,
 			'to_user_id' => $to,
 			'action_id' => $action_id
 		];
-		
+
 		if ($arbitrary_amount !== false){
 			$params['amount'] = $arbitrary_amount;
 		}
-		
+
 		if ($commission_percent !== false){
 			$params['commission_percent'] = $commission_percent;
 		}
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params);
 	} //execute_action
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param string $transaction_id - the uuid of the transaction to retrieve
 	 * @return mixed
@@ -394,19 +394,19 @@ Class OST{
 	public static function retrieve_transaction($transaction_id){
 		$endpoint = '/transactions/' . $transaction_id;
 		$uts = time();
-		
+
 		$params = [];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params, 'get');
 	} //retrieve_transaction
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param array $list_options
 	 * 		page_no = can be any positive int. defaults to 1.
@@ -422,20 +422,84 @@ Class OST{
 		$endpoint = '/transactions';
 		return self::list_endpoint($endpoint, $list_options);
 	} //list_transactions
+
+
+
+
+
 	
 	
 	
+	/***************************************************
+	 *
+	 * Balance (user balance)
+	 *
+	 ***************************************************/
+
+
+	/**
+	 * @param string $uuid - the user's UUID
+	 * @return mixed
+	 *
+	 * NOTE: the endpoint on the docs shows this as /balance/ (as in not plural as the endpoint here is listed).
+	 * this may change in the future.
+	 */
+	public static function get_balance($uuid){
+		$endpoint = '/balances/' . $uuid;
+		$uts = time();
+
+		$params = [];
+
+		$qs = self::make_querystring($endpoint, $params, $uts);
+		$signature = self::create_signature($qs);
+		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
+
+		return self::curl_request($request_params, 'get');
+	} //get_balance
+
+
+
+
+
+		
 	
-	
-	
+	/***************************************************
+	 *
+	 * Ledger (listing user transactions)
+	 *
+	 ***************************************************/
+
+
+	/**
+	 * @param string $uuid - the user's uuuid.
+	 * @param array $list_options
+	 * 		page_no = can be any positive int. defaults to 1.
+	 * 		order_by = 'created' (this is the only valid value to pass, so dont even bother including it)
+	 * 		order = 'desc' (other values: 'asc')
+	 * 		limit = min: 1, max: 100, default: 10
+	 *
+	 * 		optional filters:
+	 * 			status = comma separated string: "processing", "failed", or "complete"
+	 * @return mixed
+	 */
+	public static function ledger($uuid, $list_options = []){
+		$endpoint = '/ledger/' . $uuid;
+		return self::list_endpoint($endpoint, $list_options);
+	} //list_transactions
+
+
+
+
+
+
 	
 	/***************************************************
 	 *
 	 * Transfers (OST Prime)
 	 *
 	 ***************************************************/
-	
-	
+
+
 	/**
 	 * @param string $to_address - the public ETH address, ideally controlled by YOU - ensure you have the private key of this address
 	 * @param $amount - value in Wei: should be between 0 and 10^20.
@@ -444,22 +508,22 @@ Class OST{
 	public static function create_transfer($to_address, $amount){
 		$endpoint = '/transfers';
 		$uts = time();
-		
+
 		$params = [
 			'to_address' => $to_address,
 			'amount' => $amount
 		];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params);
 	} //create_transfer
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param string $transfer_id - the UUID of the transfer to retrieve
 	 * @return mixed
@@ -467,19 +531,19 @@ Class OST{
 	public static function retrieve_transfer($transfer_id){
 		$endpoint = '/transfers/'.$transfer_id;
 		$uts = time();
-		
+
 		$params = [];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params, 'get');
 	} //retrieve_transfer
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param array $list_options
 	 * 		page_no = can be any positive int. defaults to 1.
@@ -495,50 +559,50 @@ Class OST{
 		$endpoint = '/transfers';
 		return self::list_endpoint($endpoint, $list_options);
 	} //list_transfers
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	/***************************************************
 	 *
 	 * Token details
 	 *
 	 ***************************************************/
-	
-	
+
+
 	/**
 	 * @return mixed
 	 */
 	public static function retrieve_token_details(){
 		$endpoint = '/token';
 		$uts = time();
-		
+
 		$params = [];
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params, 'get');
 	} //token_details
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	/***************************************************
 	 *
 	 * Helpers
 	 *
 	 ***************************************************/
-	
-	
-	
+
+
+
 	/**
 	 * @param string $endpoint
 	 * @param array $list_options
@@ -546,22 +610,22 @@ Class OST{
 	 */
 	public static function list_endpoint($endpoint, $list_options){
 		$uts = time();
-		
+
 		$params = [];
 		foreach ($list_options as $k => $v){
 			$params[$k] = $v;
 		}
-		
+
 		$qs = self::make_querystring($endpoint, $params, $uts);
 		$signature = self::create_signature($qs);
 		$request_params = self::make_request_params($endpoint, $params, $signature, $uts);
-		
+
 		return self::curl_request($request_params, 'get');
 	} //list_endpoint
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param string $endpoint - the endpoint to request...
 	 * @param array $params - the payload to send
@@ -573,12 +637,12 @@ Class OST{
 		$params["request_timestamp"] = $timestamp;
 		ksort($params);
 		return $endpoint . '?' . http_build_query($params);
-		
+
 	} //make_querystring
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param string $endpoint - the endpoint to the request
 	 * @param array $params - the payload to send
@@ -595,10 +659,10 @@ Class OST{
 			'params' => $params
 		);
 	} //make_request_params
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param string $qs - the constructed query string to hash
 	 * @return string
@@ -606,10 +670,10 @@ Class OST{
 	public static function create_signature($qs){
 		return hash_hmac('sha256', $qs, OST_SECRET);
 	} // create_signature
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * @param array $request_params
 	 * @param string $method - post (default) or get
@@ -625,8 +689,8 @@ Class OST{
 		}
 		return json_decode($output->response, true);
 	} //curl_post
-	
-	
-	
-	
+
+
+
+
 } //class
