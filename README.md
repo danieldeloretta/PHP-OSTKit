@@ -6,6 +6,7 @@ Currently supports the full [OSTKit v1.1 API](https://dev.ost.com/docs/api.html)
 Again, the usage is fairly straight forward:
 ```php
 require "path/to/config.php"; // this is where I keep my OST_API_KEY, OST_API_SECRET, OST_BASE_URL, and other stuff.
+require "path/to/Curl.php"; // uses https://github.com/php-mod/curl/blob/master/src/Curl/Curl.php for curl requests! get it!
 require "path/to/OST.class.php"; // or autoload it. whatever. i'm not your mum.
 
 //create a user
